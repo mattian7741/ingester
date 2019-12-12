@@ -101,7 +101,8 @@ def ingest(src, dst):
 
                 try:
                     # print('echo "%s: %s >> %s"\n' % (str(datetime.now()), source, target))
-                    print('%s' % ('imgcat --height 5 "%s"' % target))
+                    fn = 'imgcat --height 5' if source.rsplit('.', 1)[1].lower() in ['jpg', 'jpeg', 'png', 'gif', 'cr2'] else 'echo'
+                    print('%s' % ('%s "%s"' % (fn, target)))
                     os.makedirs(os.path.dirname(target), exist_ok=True)
                     shutil.move(source, target)
                     # imgcat(open(target), height=2)
