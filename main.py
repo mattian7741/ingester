@@ -49,17 +49,17 @@ def run(src, dst):
         ingest(src, dst)
 
         # time.sleep(5)
-      
+
 def ingest(src, dst):
     os.makedirs(os.path.dirname(src), exist_ok=True)
     if not len(os.listdir(src)):
-        print('echo ', str(datetime.now()), "Running ingestion on no files")
+        print('echo ', str(datetime.now()), "Running ingestion on no files in %s" % src)
         return
 
     # files = os.listdir(src)
 
     files = getfilelist(src)
-    # print(str(datetime.now()), "Running ingestion on some files")
+    # print(str(datetime.now()), "Running ingestion on some files in %s" % src)
 
     with exiftool.ExifTool() as et:
         for file in files:
@@ -108,7 +108,7 @@ def ingest(src, dst):
                     # shutil.move(source, target)
                     #sudo rsync -r -og --remove-source-files --chown=photo:photo /sftp/matt/inbox/* /home/photo/inbox
 
-                    result = subprocess.run(['sudo', 'rsync', '-rog', '--remove-source-files', '--chown=photo:photo', source, target])
+                    result = subprocess.run(['rsync', '-rog', '--remove-source-files', '--chown=photo:photo', source, target])
                     ## imgcat(open(target), height=2)
                     ## os.remove(source)
                 except Exception as e:
@@ -126,13 +126,13 @@ def ingest(src, dst):
                     os.makedirs(os.path.dirname(target), exist_ok=True)
                     # shutil.move(source, target)
                     #sudo rsync -r -og --remove-source-files --chown=photo:photo /sftp/matt/inbox/* /home/photo/inbox
-                    result = subprocess.run(['sudo', 'rsync', '-rog', '--remove-source-files', '--chown=photo:photo', source, target])
+                    result = subprocess.run(['rsync', '-rog', '--remove-source-files', '--chown=photo:photo', source, target])
                     print('echo ', str(datetime.now()), source, target)
                     # os.remove(source)
                 except Exception as e:
                     print('echo Failed to move %s' % source, str(datetime.now()), e, source, target)
 
-        removeempty(src)
+        # removeempty(src)
 
 
 if __name__ == '__main__':
