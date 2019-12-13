@@ -8,6 +8,7 @@ import re
 import sys
 # from imgcat import imgcat
 from datetime import datetime
+import subprocess
 
 def getfilelist(loc):
     for root, dirs, files in os.walk(loc, topdown=False, followlinks=True):
@@ -104,9 +105,12 @@ def ingest(src, dst):
                     fn = 'imgcat --height 5' if source.rsplit('.', 1)[1].lower() not in ['mov', '3gp', 'mp4'] else 'echo'
                     print('%s' % ('%s "%s"' % (fn, target)))
                     os.makedirs(os.path.dirname(target), exist_ok=True)
-                    shutil.move(source, target)
-                    # imgcat(open(target), height=2)
-                    # os.remove(source)
+                    # shutil.move(source, target)
+                    #sudo rsync -r -og --remove-source-files --chown=photo:photo /sftp/matt/inbox/* /home/photo/inbox
+
+                    result = subprocess.run(['sudo', 'rsync', '-rog', '--remove-source-files', '--chown=photo:photo', source, target])
+                    ## imgcat(open(target), height=2)
+                    ## os.remove(source)
                 except Exception as e:
                     print('echo Failed to move %s' % source, str(datetime.now()), e, source, target)
 
@@ -120,7 +124,9 @@ def ingest(src, dst):
                 # print('>>', target)
                 try:
                     os.makedirs(os.path.dirname(target), exist_ok=True)
-                    shutil.move(source, target)
+                    # shutil.move(source, target)
+                    #sudo rsync -r -og --remove-source-files --chown=photo:photo /sftp/matt/inbox/* /home/photo/inbox
+                    result = subprocess.run(['sudo', 'rsync', '-rog', '--remove-source-files', '--chown=photo:photo', source, target])
                     print('echo ', str(datetime.now()), source, target)
                     # os.remove(source)
                 except Exception as e:
