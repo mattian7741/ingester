@@ -93,7 +93,7 @@ def ingest(src, dst):
                 model = metadata.get('EXIF:Model')
                 device = '(model)'
                 if model and serial:
-                    device = '%s:%s' % (model, serial)
+                    device = '%s %s' % (model, serial)
                 elif model:
                     device = model
                 elif serial:
